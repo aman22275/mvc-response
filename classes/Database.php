@@ -5,7 +5,7 @@ class Database {
     private $host = "localhost";
     private $user = "root";
     private $pass = "";
-    private $database = "lang";
+    private $database = "dashboard";
     
     //database handler
     private $dbh;

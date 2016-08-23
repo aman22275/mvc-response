@@ -52,29 +52,23 @@
 
         function insert($userApi,$feildApi,$nodeId,$nodeValue)
 	{
+            //echo "hello";
+            echo $userApi."<->".$feildApi."<->".$nodeId."<->".$nodeValue;
             $database = new Database;
-            $database->query("select apiKey from users where apiKey=:apiKey");
-            $database->bind(":apiKey", $userApi);
-          
+            $database->query("select apikey from usersignup where apikey=:apikey");
+            $database->bind(":apikey", $userApi);
             $b = $database->resultSet();
-            
-            //this will tell number of feilds require
-            /*foreach ($b as $row)
-            {
-                $totalField = $row['total'];
-                echo $totalField;
-                
-            }*/
-           
+            echo "hello";
+       
             //if key matches then only data will inserted
              if($b)
            {         
-            $database->query("select feildKey from channel_data where feildKey=:feildKey");
-            $database->bind(":feildKey", $feildApi);
+            $database->query("select feildapi from channel_data where feildapi=:feildapi");
+            $database->bind(":feildapi", $feildApi);
              $d = $database->resultSet();
             if($d){
-                $database->query("INSERT into node_data(feildKey,nodeId,value) values(:feildKey, :nodeId, :value)");
-                $database->bind(":feildKey", $feildApi);
+                $database->query("INSERT into node_data(feildapi,nodeId,value) values(:feildapi, :nodeId, :value)");
+                $database->bind(":feildapi", $feildApi);
                 $database->bind(":nodeId", $nodeId);
                 $database->bind(":value", $nodeValue);
                 $database->execute();
