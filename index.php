@@ -131,7 +131,13 @@
             $s=$nodeValue;
             var_dump($s);
             $myArray = explode(',', $s);
+            if($myArray[0]=="")
+            {
+                $pir = "";
+            }else
+            {
             $pir = $myArray[0];
+            }
             $light = $myArray[1];
             $temp = $myArray[2];
             $humid = $myArray[3];
