@@ -28,24 +28,23 @@
                             echo "NO PARAMETERS FOUND";
 		} else
               
-                    if(function_exists($url['0']) && $url['0']=="power")
+                    if(function_exists($url['0']) && $url['0']=="int")
                     {
-                
-                    //this line means USER API key is entered
+                  //this line means USER API key is entered
 			if(isset($url['1']))
                         {
                             //ChannelId(feild id)
                             if(isset($url['2']))
-                                if(!isset ($url['3']))
-                                    $url['3'] = "null";
-                                       if(!isset($url['4']))
-                                           $url['4']="null";
+                                //if(!isset ($url['3']))
+                                  //  $url['3'] = "null";
+                                       if(!isset($url['3']))
+                                           $url['3']="null";
                                        //insert(API(USER),FeildId(Channelid),nodeId,value)
-                                       $url['0']($url['1'],$url['2'],$url['3'],$url['4']);
+                                       $url['0']($url['1'],$url['2'],$url['3']);
                         }
                                 else
                             echo "NO PARAMETERS FOUND";
-                    } else
+                   } else
                     
                     if(function_exists($url['0']) && $url['0']=="power1")
                     {
@@ -91,7 +90,37 @@
 			echo "No Function";
 	}
     
-        
+        function int($userApi,$feildApi,$nodeValue)                
+        {
+            require_once 'classes/Database.php';
+            $db = new Database();
+            
+            
+            if($nodeValue=="0")
+            {
+                //PIR SENSOR
+                 date_default_timezone_set('Asia/Kolkata');
+                     $date =  date("Y-m-d");                   
+                     $time =  date("h:i:s");
+                   $db->query("INSERT into node_data(feildapi,apikey,nodeid,value,time,date) values('iot','sensenuts','pir','0','$time','$date')");
+                   $db->execute();
+     
+            }
+            else
+            if($nodeValue=="1")
+            {
+                //SMOKE SENSOR
+                 date_default_timezone_set('Asia/Kolkata');
+                     $date =  date("Y-m-d");                   
+                     $time =  date("h:i:s");
+                   $db->query("INSERT into node_data(feildapi,apikey,nodeid,value,time,date) values('iot','sensenuts','smoke','1','$time','$date')");
+                   $db->execute();
+     
+                }
+                
+        }
+
+
 
         function insert($userApi,$feildApi,$nodeValue)
 	{
@@ -100,7 +129,7 @@
             $sum="";
             $s[] = array();
             $s=$nodeValue;
-            
+            var_dump($s);
             $myArray = explode(',', $s);
             $pir = $myArray[0];
             $light = $myArray[1];
