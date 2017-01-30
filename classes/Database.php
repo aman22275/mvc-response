@@ -7,6 +7,12 @@ class Database {
     private $pass = "";
     private $database = "dashboard";
     
+    /*private $host = "localhost";
+    private $user = "sensecloud";
+    private $pass = "sense@123";
+    private $database = "tablecloud";
+    */
+    
     //database handler
     private $dbh;
     private $error;
