@@ -46,24 +46,24 @@
                             echo "NO PARAMETERS FOUND";
                    } else
                     
-                    if(function_exists($url['0']) && $url['0']=="power1")
+                    if(function_exists($url['0']) && $url['0']=="light")
                     {
                 
-                    //this line means USER API key is entered
+                //this line means USER API key is entered
 			if(isset($url['1']))
                         {
                             //ChannelId(feild id)
                             if(isset($url['2']))
-                                if(!isset ($url['3']))
-                                    $url['3'] = "null";
-                                       if(!isset($url['4']))
-                                           $url['4']="null";
+                                //if(!isset ($url['3']))
+                                  //  $url['3'] = "null";
+                                       if(!isset($url['3']))
+                                           $url['3']="null";
                                        //insert(API(USER),FeildId(Channelid),nodeId,value)
-                                       $url['0']($url['1'],$url['2'],$url['3'],$url['4']);
+                                       $url['0']($url['1'],$url['2'],$url['3']);
                         }
                                 else
                             echo "NO PARAMETERS FOUND";
-                    }
+                  }
                     
                     
                 else
@@ -90,8 +90,71 @@
 			echo "No Function";
 	}
     
+        //TO GET THE VALUES OF PIR AND SMOKE SENSOR
+        // NODEID PIR - pir
+        // NODEID SMOKE SENSOR - smoke
+        //URL - http://localhost/mvc-response/int/sensenuts/iot/0or1
+
         function int($userApi,$feildApi,$nodeValue)                
         {
+            
+            
+            require_once 'classes/Database.php';
+            $db = new Database();
+           
+            
+            
+            if($nodeValue=="0")
+            {
+                //PIR SENSOR
+                 date_default_timezone_set('Asia/Kolkata');
+                     $date =  date("Y-m-d");                   
+                     $time =  date("h:i:s");
+                   $db->query("INSERT into node_data(feildapi,apikey,nodeid,value,time,date) values('iot','sensenuts','pir','0','$time','$date')");
+                   $db->execute();
+     
+            }
+            else
+            if($nodeValue=="1")
+            {
+                //SMOKE SENSOR
+                 date_default_timezone_set('Asia/Kolkata');
+                     $date =  date("Y-m-d");                   
+                     $time =  date("h:i:s");
+                   $db->query("INSERT into node_data(feildapi,apikey,nodeid,value,time,date) values('iot','sensenuts','smoke','1','$time','$date')");
+                   $db->execute();
+     
+                }
+                
+        }
+
+        //TO HANDLE LIGHT VALUE AND STREET LIGHT VALUES 
+        //NODEID FOR STREET LIGHT - sl - CODE VALUE - y
+        //NODEID FOR COLOUR LIGHT - cl - CODE VALUE - z
+        function light($userApi,$feildApi,$nodeValue)                
+        {
+           $node="";
+            $sum="";
+            $s[] = array();
+            $s=$nodeValue;
+            
+            if($s[0] =="y")
+              {
+                $node="sl";
+             }else
+                if ($s[0]=="z") 
+             {
+                $node="cl";
+             }
+            echo $node; 
+            for($i=1;$i<strlen($s);$i++)
+            {
+                 $sum=$sum.$s[$i];
+             }
+                
+             echo $sum;
+           
+            
             require_once 'classes/Database.php';
             $db = new Database();
             
@@ -121,6 +184,7 @@
         }
 
 
+        
 
         function insert($userApi,$feildApi,$nodeValue)
 	{
@@ -133,7 +197,7 @@
             $myArray = explode(',', $s);
             if($myArray[0]=="")
             {
-                $pir = "";
+                $pir = "NULL";
             }else
             {
             $pir = $myArray[0];
