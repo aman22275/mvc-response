@@ -159,32 +159,27 @@
             $db = new Database();
             
             
-            if($nodeValue=="0")
-            {
                 //PIR SENSOR
                  date_default_timezone_set('Asia/Kolkata');
                      $date =  date("Y-m-d");                   
                      $time =  date("h:i:s");
-                   $db->query("INSERT into node_data(feildapi,apikey,nodeid,value,time,date) values('iot','sensenuts','pir','0','$time','$date')");
+                   $db->query("INSERT into node_data(feildapi,apikey,nodeid,value,time,date) values('iot','sensenuts','$node',$sum,'$time','$date')");
                    $db->execute();
+                   echo "insert";
      
-            }
-            else
-            if($nodeValue=="1")
-            {
-                //SMOKE SENSOR
-                 date_default_timezone_set('Asia/Kolkata');
-                     $date =  date("Y-m-d");                   
-                     $time =  date("h:i:s");
-                   $db->query("INSERT into node_data(feildapi,apikey,nodeid,value,time,date) values('iot','sensenuts','smoke','1','$time','$date')");
-                   $db->execute();
-     
-                }
+            
                 
         }
 
 
-        
+        //TO RETURN A STRING THAT PRINT LAST INSERTED VALUES OF STREET & COLOUR LIGHT
+        //09(Street light value)AGTSVD(Colour value)
+        function result()
+        {
+            require_once 'classes/Database.php';
+            $db = new Database();
+            $db->query("SELECT");
+        }
 
         function insert($userApi,$feildApi,$nodeValue)
 	{

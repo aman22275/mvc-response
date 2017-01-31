@@ -4,18 +4,10 @@ $db = new Database();
 
   $sum =0;
               
-$db->query("select * from node_data where feildapi=:feildapi");
-                $db->bind(":feildapi", "power2");
-                // $db->bind(":node", "slight");
-                $d =  $db->resultSet();
-                foreach ($d as $result)
-                {
-                
-                    $sum = $sum + $result["value"];
-                    //echo $result['sum(value)'];
-                    
-                }
-                echo $sum;
+$db->query("select value from node_data where nodeid=:nodeid order by id desc limit 1 ");
+$db->bind(":nodeid", "cl");
+            $c =  $db->resultSet();
+            var_dump($c);
                 
                 
                 ?>
