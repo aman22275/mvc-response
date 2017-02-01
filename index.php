@@ -67,7 +67,7 @@
                     
                     
                 else
-                    if(function_exists($url['0']) && $url['0']=="power2")
+                    if(function_exists($url['0']) && $url['0']=="insert2")
                     {
                 
                     //this line means USER API key is entered
@@ -86,9 +86,25 @@
                             echo "NO PARAMETERS FOUND";
                     }
                     
-                    else
+                    
+	} else if(function_exists($url['0'])&& $url['0']=="result")
+        {
+            if(isset($url['1']))
+                        {
+                            //ChannelId(feild id)
+                            if(isset($url['2']))
+                                //if(!isset ($url['3']))
+                                  //  $url['3'] = "null";
+                                       if(!isset($url['3']))
+                                           $url['3']="null";
+                                       //insert(API(USER),FeildId(Channelid),nodeId,value)
+                                       $url['0']($url['1'],$url['2'],$url['3']);
+                        }
+                                else
+                            echo "NO PARAMETERS FOUND";
+        }
+        else
 			echo "No Function";
-	}
     
         //TO GET THE VALUES OF PIR AND SMOKE SENSOR
         // NODEID PIR - pir
@@ -152,7 +168,7 @@
                  $sum=$sum.$s[$i];
              }
                 
-             echo $sum;
+             echo "sum->".$sum;
            
             
             require_once 'classes/Database.php';
@@ -163,7 +179,16 @@
                  date_default_timezone_set('Asia/Kolkata');
                      $date =  date("Y-m-d");                   
                      $time =  date("h:i:s");
+                     if($node=="cl")
+                     {
+                   $db->query("INSERT into node_data(feildapi,apikey,nodeid,colourlight,time,date) values('iot','sensenuts','$node','$sum','$time','$date')");
+                     }
+                     else 
+                         if($node=="sl")
+                         {
                    $db->query("INSERT into node_data(feildapi,apikey,nodeid,value,time,date) values('iot','sensenuts','$node',$sum,'$time','$date')");
+                             
+                         }
                    $db->execute();
                    echo "insert";
      
@@ -174,11 +199,35 @@
 
         //TO RETURN A STRING THAT PRINT LAST INSERTED VALUES OF STREET & COLOUR LIGHT
         //09(Street light value)AGTSVD(Colour value)
-        function result()
+        function result($userApi,$feildApi,$nodeValue)
         {
+            if($nodeValue=="get"){
             require_once 'classes/Database.php';
             $db = new Database();
-            $db->query("SELECT");
+        $sum ="";
+              
+$db->query("select value from node_data where nodeid=:nodeid order by id desc limit 1 ");
+$db->bind(":nodeid", "sl");
+            $c =  $db->resultSet();
+            foreach ($c as $r)
+            {
+                $rrr = $r["value"];
+              //  var_dump($rrr);
+            }
+                    //echo $c;
+                    
+$db->query("select colourlight from node_data where nodeid=:nodeid order by id desc limit 1 ");
+$db->bind(":nodeid", "cl");
+            $cc =  $db->resultSet();            
+           foreach ($cc as $rr)
+            {
+               $ccc = $rr["colourlight"];
+            //   var_dump($ccc);
+               
+            }
+        $sum = $rrr.$ccc;
+         echo $sum;
+            }
         }
 
         function insert($userApi,$feildApi,$nodeValue)
@@ -190,23 +239,16 @@
             $s=$nodeValue;
             var_dump($s);
             $myArray = explode(',', $s);
-            if($myArray[0]=="")
-            {
-                $pir = "NULL";
-            }else
-            {
-            $pir = $myArray[0];
-            }
-            $light = $myArray[1];
-            $temp = $myArray[2];
-            $humid = $myArray[3];
-            $cum = $myArray[4];
-            $vol = $myArray[5];
-            $pf = $myArray[6];
-            $power = $myArray[7];
-            $co = $myArray[8];
-            $co2 = $myArray[9];
-            $smoke = $myArray[10];
+         
+            $light = $myArray[0];
+            $temp = $myArray[1];
+            $humid = $myArray[2];
+            $co = $myArray[3];
+            $co2 = $myArray[4];
+            $psl= $myArray[5];
+            $pcl = $myArray[6];
+            $pcl2= $myArray[7];
+            
             var_dump($myArray);
                     
             
@@ -329,17 +371,96 @@
     // begin the transaction
     $conn->beginTransaction();
     // our SQL statements
-    $conn->exec("INSERT into node_data(feildapi,apikey,nodeid,value,time,date) values('iot','sensenuts','0',$pir,'$time','$date')");
-    $conn->exec("INSERT into node_data(feildapi,apikey,nodeid,value,time,date) values('iot','sensenuts','1',$light,'$time','$date')");
-$conn->exec("INSERT into node_data(feildapi,apikey,nodeid,value,time,date) values('iot','sensenuts','2',$temp,'$time','$date')");
-$conn->exec("INSERT into node_data(feildapi,apikey,nodeid,value,time,date) values('iot','sensenuts','3',$humid,'$time','$date')");
-$conn->exec("INSERT into node_data(feildapi,apikey,nodeid,value,time,date) values('iot','sensenuts','4',$cum,'$time','$date')");
-$conn->exec("INSERT into node_data(feildapi,apikey,nodeid,value,time,date) values('iot','sensenuts','5',$vol,'$time','$date')");
-$conn->exec("INSERT into node_data(feildapi,apikey,nodeid,value,time,date) values('iot','sensenuts','6',$pf,'$time','$date')");
-$conn->exec("INSERT into node_data(feildapi,apikey,nodeid,value,time,date) values('iot','sensenuts','7',$power,'$time','$date')");
-$conn->exec("INSERT into node_data(feildapi,apikey,nodeid,value,time,date) values('iot','sensenuts','8',$co,'$time','$date')");
-$conn->exec("INSERT into node_data(feildapi,apikey,nodeid,value,time,date) values('iot','sensenuts','9',$co2,'$time','$date')");
-$conn->exec("INSERT into node_data(feildapi,apikey,nodeid,value,time,date) values('iot','sensenuts','a',$smoke,'$time','$date')");
+    $conn->exec("INSERT into node_data(feildapi,apikey,nodeid,value,time,date) values('iot','sensenuts','0',$light,'$time','$date')");
+    $conn->exec("INSERT into node_data(feildapi,apikey,nodeid,value,time,date) values('iot','sensenuts','1',$temp,'$time','$date')");
+    $conn->exec("INSERT into node_data(feildapi,apikey,nodeid,value,time,date) values('iot','sensenuts','2',$humid,'$time','$date')");
+    $conn->exec("INSERT into node_data(feildapi,apikey,nodeid,value,time,date) values('iot','sensenuts','3',$co,'$time','$date')");
+    $conn->exec("INSERT into node_data(feildapi,apikey,nodeid,value,time,date) values('iot','sensenuts','4',$co2,'$time','$date')");
+    $conn->exec("INSERT into node_data(feildapi,apikey,nodeid,value,time,date) values('iot','sensenuts','5',$psl,'$time','$date')");
+    $conn->exec("INSERT into node_data(feildapi,apikey,nodeid,value,time,date) values('iot','sensenuts','6',$pcl,'$time','$date')");
+    $conn->exec("INSERT into node_data(feildapi,apikey,nodeid,value,time,date) values('iot','sensenuts','7',$pcl2,'$time','$date')");
+    // commit the transactionzz
+    $conn->commit();
+    echo "New records created successfully";
+    }
+catch(PDOException $e)
+    {
+    // roll back the transaction if something failed
+    $conn->rollback();
+    echo "Error: " . $e->getMessage();
+    }
+
+$conn = null;
+            }else
+            {
+                echo "feildApi is not correct";
+            }
+            
+           }else
+           {
+               echo "your APIKEY is not correct";
+           }
+           
+       }
+       
+       function insert2($userApi,$feildApi,$nodeValue)
+	{
+            
+            $node="";
+            $sum="";
+            $s[] = array();
+            $s=$nodeValue;
+            var_dump($s);
+            $myArray = explode(',', $s);
+         
+            $cum = $myArray[0];
+            $vol = $myArray[1];
+            $pf = $myArray[2];
+            $pow = $myArray[3];
+            
+            var_dump($myArray);
+                                
+            $database = new Database;
+            $database->query("select apikey from usersignup where apikey=:apikey");
+            $database->bind(":apikey", $userApi);
+            $b = $database->resultSet();
+         
+            //if key matches then only data will inserted
+             if($b)
+           {       
+                 
+                    
+            $database->query("select feildapi from channel_data where feildapi=:feildapi");
+            $database->bind(":feildapi", $feildApi);
+             $d = $database->resultSet();
+            if($d){
+                 function rand_string( $length ) {
+	$chars = "0123456789";	
+	$size = strlen( $chars );
+	for( $i = 0; $i < $length; $i++ ) {
+	$str = substr( str_shuffle( $chars ), 0, $length );
+          
+        }
+	return $str;
+}
+
+                   $apikey = "SENSE".rand_string( 3 );
+           try {
+    $conn = new PDO("mysql:host=localhost;dbname=dashboard", "root", "");
+    // set the PDO error mode to exception
+     date_default_timezone_set('Asia/Kolkata');
+                     $date =  date("Y-m-d");                   
+                     $time =  date("h:i:s");
+
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    // begin the transaction
+    $conn->beginTransaction();
+    // our SQL statements
+    $conn->exec("INSERT into node_data(feildapi,apikey,nodeid,value,time,date) values('iot','sensenuts','8',$cum,'$time','$date')");
+    $conn->exec("INSERT into node_data(feildapi,apikey,nodeid,value,time,date) values('iot','sensenuts','9',$vol,'$time','$date')");
+    $conn->exec("INSERT into node_data(feildapi,apikey,nodeid,value,time,date) values('iot','sensenuts','a',$pf,'$time','$date')");
+    $conn->exec("INSERT into node_data(feildapi,apikey,nodeid,value,time,date) values('iot','sensenuts','b',$pow,'$time','$date')");
     // commit the transactionzz
     $conn->commit();
     echo "New records created successfully";

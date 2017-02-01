@@ -2,12 +2,28 @@
 require_once 'classes/Database.php';
 $db = new Database(); 
 
-  $sum =0;
+  $sum ="";
               
 $db->query("select value from node_data where nodeid=:nodeid order by id desc limit 1 ");
-$db->bind(":nodeid", "cl");
+$db->bind(":nodeid", "sl");
             $c =  $db->resultSet();
-            var_dump($c);
-                
-                
+            foreach ($c as $r)
+            {
+                $rrr = $r["value"];
+              //  var_dump($rrr);
+            }
+                    //echo $c;
+                    
+$db->query("select colourlight from node_data where nodeid=:nodeid order by id desc limit 1 ");
+$db->bind(":nodeid", "cl");
+            $cc =  $db->resultSet();            
+           foreach ($cc as $rr)
+            {
+               $ccc = $rr["colourlight"];
+            //   var_dump($ccc);
+               
+            }
+        $sum = $rrr.$ccc;
+         echo $sum;
                 ?>
+  
