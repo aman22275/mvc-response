@@ -10,7 +10,7 @@ $db->bind(":nodeid", "sl");
             foreach ($c as $r)
             {
                 $rrr = $r["value"];
-              //  var_dump($rrr);
+                var_dump($rrr);
             }
                     //echo $c;
                     
@@ -20,7 +20,7 @@ $db->bind(":nodeid", "cl");
            foreach ($cc as $rr)
             {
                $ccc = $rr["colourlight"];
-            //   var_dump($ccc);
+               var_dump($ccc);
                
             }
         $sum = $rrr.$ccc;

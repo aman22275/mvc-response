@@ -147,6 +147,7 @@
         //TO HANDLE LIGHT VALUE AND STREET LIGHT VALUES 
         //NODEID FOR STREET LIGHT - sl - CODE VALUE - y
         //NODEID FOR COLOUR LIGHT - cl - CODE VALUE - z
+        //NODEID FOR DIM LIGHT    - dl - code value - x
         function light($userApi,$feildApi,$nodeValue)                
         {
            $node="";
@@ -161,7 +162,12 @@
                 if ($s[0]=="z") 
              {
                 $node="cl";
+             }else
+                 if($s[0]=="x")
+             {
+                $node="dl";
              }
+             
             echo $node; 
             for($i=1;$i<strlen($s);$i++)
             {
@@ -184,11 +190,15 @@
                    $db->query("INSERT into node_data(feildapi,apikey,nodeid,colourlight,time,date) values('iot','sensenuts','$node','$sum','$time','$date')");
                      }
                      else 
-                         if($node=="sl")
-                         {
+                     if($node=="sl")
+                     {
                    $db->query("INSERT into node_data(feildapi,apikey,nodeid,value,time,date) values('iot','sensenuts','$node',$sum,'$time','$date')");
                              
-                         }
+                     }
+                     else
+                     {
+                   $db->query("INSERT into node_data(feildapi,apikey,nodeid,value,time,date) values('iot','sensenuts','$node',$sum,'$time','$date')");
+                     }
                    $db->execute();
                    echo "insert";
      
@@ -201,6 +211,7 @@
         //09(Street light value)AGTSVD(Colour value)
         function result($userApi,$feildApi,$nodeValue)
         {
+            echo "hii";
             if($nodeValue=="get"){
             require_once 'classes/Database.php';
             $db = new Database();
@@ -227,6 +238,7 @@ $db->bind(":nodeid", "cl");
             }
         $sum = $rrr.$ccc;
          echo $sum;
+         var_dump($sum);
             }
         }
 
