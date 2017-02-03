@@ -10,7 +10,16 @@ $db->bind(":nodeid", "sl");
             foreach ($c as $r)
             {
                 $rrr = $r["value"];
-                var_dump($rrr);
+           //     var_dump($rrr);
+            }
+            
+$db->query("select value from node_data where nodeid=:nodeid order by id desc limit 1 ");
+$db->bind(":nodeid", "dl");
+            $c1 =  $db->resultSet();
+            foreach ($c1 as $r1)
+            {
+                $rrr1 = $r1["value"];
+             //   var_dump($rrr1);
             }
                     //echo $c;
                     
@@ -20,10 +29,10 @@ $db->bind(":nodeid", "cl");
            foreach ($cc as $rr)
             {
                $ccc = $rr["colourlight"];
-               var_dump($ccc);
+               //var_dump($ccc);
                
             }
-        $sum = $rrr.$ccc;
+        $sum = $rrr.$rrr1.$ccc;
          echo $sum;
                 ?>
   

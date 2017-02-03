@@ -253,11 +253,11 @@ $db->bind(":nodeid", "cl");
             $myArray = explode(',', $s);
          
             $light = $myArray[0];
-            $temp = $myArray[1];
-            $humid = $myArray[2];
-            $co = $myArray[3];
-            $co2 = $myArray[4];
-            $psl= $myArray[5];
+            $humid = $myArray[1];
+            $co = $myArray[2];
+            $temp = $myArray[3];
+            $psl= $myArray[4];
+            $pdl= $myArray[5];
             $pcl = $myArray[6];
             $pcl2= $myArray[7];
             
@@ -384,13 +384,14 @@ $db->bind(":nodeid", "cl");
     $conn->beginTransaction();
     // our SQL statements
     $conn->exec("INSERT into node_data(feildapi,apikey,nodeid,value,time,date) values('iot','sensenuts','0',$light,'$time','$date')");
-    $conn->exec("INSERT into node_data(feildapi,apikey,nodeid,value,time,date) values('iot','sensenuts','1',$temp,'$time','$date')");
-    $conn->exec("INSERT into node_data(feildapi,apikey,nodeid,value,time,date) values('iot','sensenuts','2',$humid,'$time','$date')");
-    $conn->exec("INSERT into node_data(feildapi,apikey,nodeid,value,time,date) values('iot','sensenuts','3',$co,'$time','$date')");
-    $conn->exec("INSERT into node_data(feildapi,apikey,nodeid,value,time,date) values('iot','sensenuts','4',$co2,'$time','$date')");
-    $conn->exec("INSERT into node_data(feildapi,apikey,nodeid,value,time,date) values('iot','sensenuts','5',$psl,'$time','$date')");
+    $conn->exec("INSERT into node_data(feildapi,apikey,nodeid,value,time,date) values('iot','sensenuts','1',$humid,'$time','$date')");
+    $conn->exec("INSERT into node_data(feildapi,apikey,nodeid,value,time,date) values('iot','sensenuts','2',$co,'$time','$date')");
+    $conn->exec("INSERT into node_data(feildapi,apikey,nodeid,value,time,date) values('iot','sensenuts','3',$temp,'$time','$date')");
+    $conn->exec("INSERT into node_data(feildapi,apikey,nodeid,value,time,date) values('iot','sensenuts','4',$psl,'$time','$date')");
+    $conn->exec("INSERT into node_data(feildapi,apikey,nodeid,value,time,date) values('iot','sensenuts','5',$pdl,'$time','$date')");
     $conn->exec("INSERT into node_data(feildapi,apikey,nodeid,value,time,date) values('iot','sensenuts','6',$pcl,'$time','$date')");
     $conn->exec("INSERT into node_data(feildapi,apikey,nodeid,value,time,date) values('iot','sensenuts','7',$pcl2,'$time','$date')");
+  
     // commit the transactionzz
     $conn->commit();
     echo "New records created successfully";
@@ -469,10 +470,10 @@ $conn = null;
     // begin the transaction
     $conn->beginTransaction();
     // our SQL statements
-    $conn->exec("INSERT into node_data(feildapi,apikey,nodeid,value,time,date) values('iot','sensenuts','8',$cum,'$time','$date')");
-    $conn->exec("INSERT into node_data(feildapi,apikey,nodeid,value,time,date) values('iot','sensenuts','9',$vol,'$time','$date')");
-    $conn->exec("INSERT into node_data(feildapi,apikey,nodeid,value,time,date) values('iot','sensenuts','a',$pf,'$time','$date')");
-    $conn->exec("INSERT into node_data(feildapi,apikey,nodeid,value,time,date) values('iot','sensenuts','b',$pow,'$time','$date')");
+    $conn->exec("INSERT into node_data(feildapi,apikey,nodeid,value,time,date) values('iot','sensenuts','9',$cum,'$time','$date')");
+    $conn->exec("INSERT into node_data(feildapi,apikey,nodeid,value,time,date) values('iot','sensenuts','a',$vol,'$time','$date')");
+    $conn->exec("INSERT into node_data(feildapi,apikey,nodeid,value,time,date) values('iot','sensenuts','b',$pf,'$time','$date')");
+    $conn->exec("INSERT into node_data(feildapi,apikey,nodeid,value,time,date) values('iot','sensenuts','c',$pow,'$time','$date')");
     // commit the transactionzz
     $conn->commit();
     echo "New records created successfully";
